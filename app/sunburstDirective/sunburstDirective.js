@@ -20,7 +20,7 @@ angular.module('myApp')
         var y = d3.scale.sqrt()
           .range([0, radius]);
 
-        var color = d3.scale.category20c();
+        var color = d3.scale.category20b();
 
         var svg = d3.select("#body").append("svg")
           .attr("width", width)
@@ -48,6 +48,41 @@ angular.module('myApp')
           });
 
 
+
+        var tooltip = d3.select("#body")
+          .append("div")
+          .attr("class", "tooltip")
+          .style("position", "absolute")
+          .style("z-index", "10")
+          .style("opacity", 0);
+
+
+        var firstChild = d3.select("body")
+          .append("div")
+          .attr("class", "firstChild");
+
+          
+        var secondChild = d3.select("body")
+          .append("div")
+          .attr("class", "secondChild");
+
+
+        //dataForFirstChild(scope.data); //called on pageload
+
+
+        function format_number(x) {
+          return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+
+        function format_name(d) {
+          var name = d.name;
+          return  '<b>' + name + '</b><br> (' + format_number(d.value) + ')';
+        }
+
+
+        //d3.json("newData.json", function(error, root) {
+
         var path = svg.selectAll("path")
           .data(partition.nodes(scope.data))
           .enter().append("path")
@@ -74,69 +109,6 @@ angular.module('myApp')
           .on("mouseout", function() {
             return tooltip.style("opacity", 0);
           });
-  
-
-
-        var tooltip = d3.select("#body")
-          .append("div")
-          .attr("class", "tooltip")
-          .style("position", "absolute")
-          .style("z-index", "10")
-          .style("opacity", 0);
-
-
-        var firstChild = d3.select("body")
-          .append("div")
-          .attr("class", "firstChild");
-
-          
-        var secondChild = d3.select("body")
-          .append("div")
-          .attr("class", "secondChild");
-
-
-       dataForFirstChild(scope.data); //called on pageload
-
-
-        function format_number(x) {
-          return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
-
-        function format_name(d) {
-          var name = d.name;
-          return  '<b>' + name + '</b><br> (' + format_number(d.value) + ')';
-        }
-
-
-        //d3.json("newData.json", function(error, root) {
-
-        // var path = svg.selectAll("path")
-        //   .data(partition.nodes(scope.data))
-        //   .enter().append("path")
-        //   .attr("d", arc)
-        //   .attr("fill-rule", "evenodd")
-        //   .style("fill", function(d) {
-        //     return color((d.children ? d : d).name);
-        //   })
-        //   .on("click", click)
-        //   .on("mouseover", function(d) {
-        //     tooltip.html(function() {
-        //       var name = format_name(d);
-        //       return name;
-        //     });
-        //     return tooltip.transition()
-        //       .duration(50)
-        //       .style("opacity", 0.8);
-        //   })
-        //   .on("mousemove", function(d) {
-        //     return tooltip
-        //       .style("top", (d3.event.pageY - 20) + "px")
-        //       .style("left", (d3.event.pageX + 20) + "px");
-        //   })
-        //   .on("mouseout", function() {
-        //     return tooltip.style("opacity", 0);
-        //   });
 
 
         // var pathView = firstChild.selectAll("a.viewClass")
@@ -159,7 +131,7 @@ angular.module('myApp')
 
         function getAncestors(node) {
           console.log("Ancestor:", node);
-          var path = [];
+          //var path = [];
           var firstNodes = [];
           for(var item in node.children) {
             firstNodes.push(node.children[item]) ;
@@ -180,13 +152,13 @@ angular.module('myApp')
            var res = getPercentage(d.value, id[x].value);
            percentageRes = res.toFixed(2);
            // console.log(percentageRes);
-            htmlString += '<div class = "row chart"> <div class = "col-lg-2 col-md-2 col-xs-2"> <p>'  +  id[x].name + ' (' + id[x].value + ')' + ' </p> </div> <div class ="col-lg-5 col-md-5 col-xs-5 "> <div style="background-color:'  + color(id[x].name) + '; width: ' + (percentageRes*4) +'px; "></div></div><div class="col-lg-1 col-md-1 col-xs-1"> <p> ' + percentageRes + '%</p> </div> <div class="col-lg-2 col-md-2 col-xs-2"> <div class="viewClass"><a class = "viewClass" href="">View </a></div> </div></div>';
+            htmlString += '<div class = "row chart "> <div class = "col-lg-2 col-md-2 col-xs-2"> <p>'  +  id[x].name + ' (' + id[x].value + ')' + ' </p> </div> <div class ="col-lg-5 col-md-5 col-xs-5 "> <div style="background-color:'  + color(id[x].name) + '; width: ' + (percentageRes*3) +'px; "></div></div><div class="col-lg-1 col-md-1 col-xs-1"> <p> ' + percentageRes + '%</p> </div> <div class="col-lg-2 col-md-2 col-xs-2"> <div class="viewClass"><a class = "viewClass">View </a></div> </div></div>';
           }
 
           firstChild.html(htmlString);
 
           d3.selectAll("a.viewClass")
-           .data(d)
+           .data(d.children)
            .on("click", dataForSecondChild);
         }
 
@@ -202,7 +174,7 @@ angular.module('myApp')
             console.log(secChild[i].name);
             htmlString2 += '<div class="secChart">' + secChild[i].name + ' ' +secChild[i].value +'</div>';
           }
-          //secondChild.html(htmlString2);
+          secondChild.html(htmlString2);
 
         }
 
