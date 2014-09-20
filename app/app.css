@@ -84,3 +84,63 @@ body {
 #percentage {
   font-size: 2.5em;
 }
+.firstChild {
+  position: absolute;
+  left: 65px;
+  top: 800px;
+  width: 800px;
+  height: 502px;
+ /* display: table-cell;*/
+  border: solid 1px #F00;
+
+}
+
+.secondChild {
+  position: absolute;
+  left: 910px;
+  top: 130px;
+  width: 530px;
+  height: 502px;
+  border: solid 1px #F00;
+}
+
+.thirdChild {
+  position: absolute;
+  left: 810px;
+  top: 800px;
+  width: 530px;
+  height: 502px;
+  border: solid 1px #F00
+}
+
+.chart div {
+  font: 15px sans-serif;
+  text-align: center;
+  padding: 3px;
+  margin: 10px;
+  color: grey;
+  height: 30px;
+}
+
+.name {
+  border: solid 1px red;
+  display: table-cell;
+  width: 10px;
+}
+
+.viewClass {
+  
+}
+.viewClass1 {
+  
+}
+
+.secChart {
+  font: 15px sans-serif;
+  text-align: center;
+  padding: 3px;
+  margin: 10px;
+  color: green;
+  border-bottom:solid 1px green;
+  height: 30px;
+}
